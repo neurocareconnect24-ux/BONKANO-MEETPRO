@@ -1,0 +1,7 @@
+# SECURITY: Ce fichier est un TEMPLATE. Copiez-le vers key.properties
+# et remplissez avec vos vrais credentials.
+# Ne JAMAIS commiter key.properties dans le repo Git.
+storePassword=VOTRE_MOT_DE_PASSE_KEYSTORE
+keyPassword=VOTRE_MOT_DE_PASSE_CLE
+keyAlias=neurocare-admin
+storeFile=neurocare-admin-release-key.jks

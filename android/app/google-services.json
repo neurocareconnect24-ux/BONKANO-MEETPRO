@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "214738954591",
+    "project_id": "kivicareneurocare",
+    "storage_bucket": "kivicareneurocare.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:214738954591:android:2bba7129a9e36bcb5f6eea",
+        "android_client_info": {
+          "package_name": "com.neurocare.connect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "214738954591-5mb63am55t6aino82citu3nlq7u7jbop.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBwddeG80wz19VNhbQ7rl6bDq49csTgNo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "214738954591-5mb63am55t6aino82citu3nlq7u7jbop.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:214738954591:android:2db36c26c0fcae255f6eea",
+        "android_client_info": {
+          "package_name": "com.neurocareconnect.telemed"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "214738954591-5mb63am55t6aino82citu3nlq7u7jbop.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBwddeG80wz19VNhbQ7rl6bDq49csTgNo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "214738954591-5mb63am55t6aino82citu3nlq7u7jbop.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
