@@ -12,21 +12,11 @@ workflows:
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.neurocareconnect.telemed
-      groups:
-        - app_store_credentials
       vars:
         BUNDLE_ID: "com.neurocareconnect.telemed"
         XCODE_WORKSPACE: "Runner.xcworkspace"
         XCODE_SCHEME: "Runner"
     scripts:
-      - name: Set up code signing
-        script: |
-          keychain initialize
-          app-store-connect fetch-signing-files "$BUNDLE_ID" \
-            --type IOS_APP_STORE \
-            --create
-          keychain add-certificates
-          xcode-project use-profiles
       - name: Get Flutter packages
         script: flutter packages pub get
       - name: Install CocoaPods dependencies
@@ -54,8 +44,6 @@ workflows:
     instance_type: linux_x2
     environment:
       flutter: 3.38.9
-      groups:
-        - google_play_credentials
     scripts:
       - name: Get Flutter packages
         script: flutter packages pub get
