@@ -288,58 +288,54 @@ class AppointmentCard extends StatelessWidget {
                       onTap: onCheckIn,
                     ).expand(),
                   ],
-                ).paddingTop(24).visible(showBtns)
+                ).paddingTop(24).visible(showBtns),
+                if (appointment.isVideoConsultancy)
+                  GestureDetector(
+                    onTap: () {
+                      if (canLaunchVideoCall(status: appointment.status)) {
+                        if (isOnlineService) {
+                          Get.to(() => VideoCallScreen(), arguments: appointment);
+                        } else {
+                          toast(locale.value.thisIsNotAOnlineService);
+                        }
+                      } else {
+                        if (appointment.status.toLowerCase().contains(StatusConst.pending)) {
+                          toast(locale.value.oppsThisAppointmentIsNotConfirmedYet);
+                        } else if (appointment.status.toLowerCase().contains(StatusConst.cancel) || appointment.status.toLowerCase().contains(StatusConst.cancelled)) {
+                          toast(locale.value.oppsThisAppointmentHasBeenCancelled);
+                        } else if (appointment.status.toLowerCase().contains(StatusConst.completed)) {
+                          toast(locale.value.oppsThisAppointmentHasBeenCompleted);
+                        }
+                      }
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                      decoration: boxDecorationDefault(
+                        borderRadius: radius(defaultAppButtonRadius / 2),
+                        color: canLaunchVideoCall(status: appointment.status) ? appColorPrimary : Colors.grey.shade400,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const CachedImageWidget(
+                            url: Assets.imagesVideoCamera,
+                            height: 20,
+                            width: 20,
+                            color: white,
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            locale.value.joinVideoCall,
+                            style: boldTextStyle(color: white, size: 14),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ).paddingTop(showBtns ? 12 : 24),
               ],
             ).paddingSymmetric(vertical: 16),
           ),
-          if (appointment.isVideoConsultancy)
-            Positioned(
-              left: 16,
-              right: 16,
-              bottom: 16 + MediaQuery.of(context).padding.bottom,
-              child: GestureDetector(
-                onTap: () {
-                  if (canLaunchVideoCall(status: appointment.status)) {
-                    if (isOnlineService) {
-                      Get.to(() => VideoCallScreen(), arguments: appointment);
-                    } else {
-                      toast(locale.value.thisIsNotAOnlineService);
-                    }
-                  } else {
-                    if (appointment.status.toLowerCase().contains(StatusConst.pending)) {
-                      toast(locale.value.oppsThisAppointmentIsNotConfirmedYet);
-                    } else if (appointment.status.toLowerCase().contains(StatusConst.cancel) || appointment.status.toLowerCase().contains(StatusConst.cancelled)) {
-                      toast(locale.value.oppsThisAppointmentHasBeenCancelled);
-                    } else if (appointment.status.toLowerCase().contains(StatusConst.completed)) {
-                      toast(locale.value.oppsThisAppointmentHasBeenCompleted);
-                    }
-                  }
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                  decoration: boxDecorationDefault(
-                    borderRadius: radius(defaultAppButtonRadius / 2),
-                    color: canLaunchVideoCall(status: appointment.status) ? appColorPrimary : Colors.grey.shade400,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const CachedImageWidget(
-                        url: Assets.imagesVideoCamera,
-                        height: 20,
-                        width: 20,
-                        color: white,
-                      ),
-                      const SizedBox(width: 10),
-                      Text(
-                        locale.value.joinVideoCall,
-                        style: boldTextStyle(color: white, size: 14),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
         ],
       ),
     );
