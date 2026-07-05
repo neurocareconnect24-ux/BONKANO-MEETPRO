@@ -7,7 +7,7 @@ const APP_LOGO_URL = '$DOMAIN_URL/img/logo/mini_logo.png';
 const DEFAULT_LANGUAGE = 'fr';
 
 ///Live Url
-const DOMAIN_URL = "https://pro.neurocareconnect.tech";
+const DOMAIN_URL = "https://meet.bonkano.fr";
 
 const BASE_URL = '$DOMAIN_URL/api/';
 
