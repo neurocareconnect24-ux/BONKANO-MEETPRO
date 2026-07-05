@@ -27,6 +27,7 @@ class AddEncounterResp {
 }
 
 class EncounterResp {
+  int id;
   String encounterDate;
   String clinicId;
   String doctorId;
@@ -35,6 +36,7 @@ class EncounterResp {
   int vendorId;
 
   EncounterResp({
+    this.id = -1,
     this.encounterDate = "",
     this.clinicId = "",
     this.doctorId = "",
@@ -45,6 +47,7 @@ class EncounterResp {
 
   factory EncounterResp.fromJson(Map<String, dynamic> json) {
     return EncounterResp(
+      id: json['id'] is int ? json['id'] : -1,
       encounterDate:
           json['encounter_date'] is String ? json['encounter_date'] : "",
       clinicId: json['clinic_id'] is String ? json['clinic_id'] : "",
@@ -57,6 +60,7 @@ class EncounterResp {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'encounter_date': encounterDate,
       'clinic_id': clinicId,
       'doctor_id': doctorId,

@@ -10,8 +10,10 @@ import 'package:bonkano_meet_pro/screens/Encounter/add_encounter/model/encounter
 import '../../../utils/app_common.dart';
 import '../../../utils/common_base.dart';
 import '../../../utils/constants.dart';
+import '../../appointment/model/appointments_res_model.dart';
 import '../../clinic/model/clinics_res_model.dart';
 import '../../doctor/model/doctor_list_res.dart';
+import '../encounter_dashboard/encounter_dashboard.dart';
 import '../model/encounters_list_model.dart';
 import 'model/patient_model.dart';
 
@@ -74,6 +76,11 @@ class AddEncountersController extends GetxController {
   //Edit Counter Details
   Rx<EncounterElement> editEncounterResp = EncounterElement().obs;
 
+  // Set when this screen is opened from an appointment's check-in flow.
+  // Creation must then be tied to that appointment (appointment_id), and
+  // patient/clinic/doctor are locked to match it.
+  Rx<AppointmentData?> fromAppointment = Rx<AppointmentData?>(null);
+
   RxString selectedEncounterType = 'consultation'.obs;
 
   final Map<String, String> encounterTypes = {
@@ -102,6 +109,9 @@ class AddEncountersController extends GetxController {
       if (editEncounterResp.value.encounterType.isNotEmpty) {
         selectedEncounterType(editEncounterResp.value.encounterType);
       }
+    } else if (Get.arguments is Map && Get.arguments['appointmentData'] is AppointmentData) {
+      fromAppointment(Get.arguments['appointmentData']);
+      dateCont.text = fromAppointment.value!.appointmentDate.dateInDMMMMyyyyFormat;
     }
   }
 
@@ -123,6 +133,14 @@ class AddEncountersController extends GetxController {
       if (editEncounterResp.value.clinicName.isNotEmpty) {
         for (var element in clinicList) {
           if (element.id == editEncounterResp.value.clinicId) {
+            selectClinic(element);
+            clinicCont.text = element.name;
+          }
+        }
+        await getDoctors();
+      } else if (fromAppointment.value != null) {
+        for (var element in clinicList) {
+          if (element.id == fromAppointment.value!.clinicId) {
             selectClinic(element);
             clinicCont.text = element.name;
           }
@@ -154,6 +172,13 @@ class AddEncountersController extends GetxController {
       if (editEncounterResp.value.userName.isNotEmpty) {
         for (var element in patientList) {
           if (element.id == editEncounterResp.value.userId) {
+            selectPatient(element);
+            patientCont.text = element.fullName;
+          }
+        }
+      } else if (fromAppointment.value != null) {
+        for (var element in patientList) {
+          if (element.id == fromAppointment.value!.userId) {
             selectPatient(element);
             patientCont.text = element.fullName;
           }
@@ -191,6 +216,13 @@ class AddEncountersController extends GetxController {
             doctorCont.text = element.fullName;
           }
         }
+      } else if (fromAppointment.value != null) {
+        for (var element in doctors) {
+          if (element.doctorId == fromAppointment.value!.doctorId) {
+            selectDoctor(element);
+            doctorCont.text = element.fullName;
+          }
+        }
       }
     }).catchError((e) {
       hasErrorFetchingDoctor(true);
@@ -208,12 +240,38 @@ class AddEncountersController extends GetxController {
       "user_id": selectPatient.value.id.toString(),
       "description": descriptionCont.text.isEmpty ? "" : descriptionCont.text.toString()
     };
+    if (fromAppointment.value != null) {
+      request["appointment_id"] = fromAppointment.value!.id.toString();
+    }
     if (showloader) {
       isLoading(true);
     }
     await saveEncounterFuture(CoreServiceApis.saveEncounter(request: request, encounterResp: encounterResp.value)).then((value) {
       encounterResp(value.value);
-      Get.back(result: true);
+      if (fromAppointment.value != null) {
+        final appointment = fromAppointment.value!;
+        Get.off(
+          () => EncountersDashboardScreen(
+            encounterDetail: EncounterElement(
+              id: encounterResp.value.id,
+              appointmentId: appointment.id,
+              clinicId: appointment.clinicId,
+              clinicName: appointment.clinicName,
+              doctorId: appointment.doctorId,
+              doctorName: appointment.doctorName,
+              encounterDate: appointment.appointmentDate,
+              userId: appointment.userId,
+              userName: appointment.userName,
+              userImage: appointment.userImage,
+              address: appointment.address,
+              userEmail: appointment.userEmail,
+              description: descriptionCont.text,
+            ),
+          ),
+        );
+      } else {
+        Get.back(result: true);
+      }
     }).catchError((e) {
       toast("Error: $e");
       log("getEncounterResp err: $e");

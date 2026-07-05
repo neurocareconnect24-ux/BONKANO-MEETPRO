@@ -72,6 +72,7 @@ class AddEncounterScreen extends StatelessWidget {
                   textFieldType: TextFieldType.NAME,
                   readOnly: true,
                   onTap: () async {
+                    if (addEncountersCont.fromAppointment.value != null) return;
                     serviceCommonBottomSheet(
                       context,
                       child: Obx(
@@ -111,6 +112,7 @@ class AddEncounterScreen extends StatelessWidget {
                     textFieldType: TextFieldType.NAME,
                     readOnly: true,
                     onTap: () async {
+                      if (addEncountersCont.fromAppointment.value != null) return;
                       serviceCommonBottomSheet(
                         context,
                         child: Obx(
@@ -149,6 +151,7 @@ class AddEncounterScreen extends StatelessWidget {
                   textFieldType: TextFieldType.NAME,
                   readOnly: true,
                   onTap: () async {
+                    if (addEncountersCont.fromAppointment.value != null) return;
                     serviceCommonBottomSheet(
                       context,
                       child: Obx(

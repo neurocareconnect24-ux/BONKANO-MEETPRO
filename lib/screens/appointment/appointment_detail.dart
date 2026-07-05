@@ -380,6 +380,11 @@ class AppointmentDetail extends StatelessWidget {
                             () => EncountersDashboardScreen(encounterDetail: encounterDetail),
                             arguments: appointmentDetailCont.appintmentData.value.encounterId,
                           );
+                        } else if (appointmentDetailCont.appintmentData.value.status == StatusConst.confirmed) {
+                          // Check-in and immediately create the linked medical
+                          // record (encounter) — this is what ties appointment_id
+                          // to the encounter so the backend can later auto-checkout.
+                          appointmentDetailCont.checkInAndCreateEncounter(context: context);
                         } else {
                           appointmentDetailCont.updateStatus(
                             id: appointmentDetailCont.appintmentData.value.id,

@@ -8,6 +8,7 @@ import '../../main.dart';
 import '../../utils/colors.dart';
 import '../../utils/common_base.dart';
 import '../../utils/constants.dart';
+import '../Encounter/add_encounter/add_encounter_screen.dart';
 import '../Encounter/encounter_dashboard/encounter_dashboard.dart';
 import '../Encounter/model/encounters_list_model.dart';
 import '../home/home_controller.dart';
@@ -85,6 +86,45 @@ class AppointmentDetailController extends GetxController {
             toast(e.toString());
           }).whenComplete(() => isUpdateLoading(false));
         }
+      },
+    );
+  }
+
+  // Check-in a confirmed appointment, then send the practitioner straight
+  // into creating the linked medical record (encounter) — this is what
+  // ties an appointment_id to the encounter, which the backend requires
+  // (along with payment_status and check_in) before it can auto-transition
+  // the appointment to checkout.
+  checkInAndCreateEncounter({required BuildContext context}) {
+    showConfirmDialogCustom(
+      context,
+      primaryColor: appColorPrimary,
+      title: locale.value.doYouWantToPerformThisAction,
+      positiveText: locale.value.yes,
+      negativeText: locale.value.cancel,
+      onAccept: (ctx) async {
+        isUpdateLoading(true);
+        await CoreServiceApis.changeAppointmentStatus(
+          id: appintmentData.value.id,
+          request: {'status': StatusConst.check_in},
+        ).then((value) {
+          init();
+          try {
+            AppointmentsController acont = Get.find();
+            acont.getAppointmentList();
+          } catch (e) {
+            log('AppointmentDetail checkInAndCreateEncounter acont = Get.find() E: $e');
+          }
+          try {
+            HomeController hcont = Get.find();
+            hcont.getDashboardDetail();
+          } catch (e) {
+            log('AppointmentDetail checkInAndCreateEncounter hcont = Get.find() E: $e');
+          }
+          Get.to(() => AddEncounterScreen(), arguments: {'appointmentData': appintmentData.value});
+        }).catchError((e) {
+          toast(e.toString());
+        }).whenComplete(() => isUpdateLoading(false));
       },
     );
   }

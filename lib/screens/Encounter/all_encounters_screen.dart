@@ -26,19 +26,8 @@ class AllEncountersScreen extends StatelessWidget {
       appBartitleText: locale.value.encounters,
       isLoading: allEncountersCont.isLoading,
       appBarVerticalSize: Get.height * 0.12,
-      actions: [
-        IconButton(
-          onPressed: () async {
-            Get.to(() => AddEncounterScreen(), arguments: [false])?.then((value) {
-              if (value == true) {
-                allEncountersCont.page(1);
-                allEncountersCont.getAllEncounters(showloader: false);
-              }
-            });
-          },
-          icon: const Icon(Icons.add_circle_outline_rounded, size: 28, color: Colors.white),
-        ).paddingOnly(right: 8),
-      ],
+      // Encounters must always be created from an appointment's check-in
+      // flow (so appointment_id is set) — no standalone creation here.
       body: SizedBox(
         height: Get.height,
         child: Column(
