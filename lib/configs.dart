@@ -14,8 +14,8 @@ const BASE_URL = '$DOMAIN_URL/api/';
 const APP_PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.neurocareconnect.telemed';
 const APP_APPSTORE_URL = '';
 
-const TERMS_CONDITION_URL = 'https://pro.bonkano.fr/page/terms-conditions';
-const PRIVACY_POLICY_URL = 'https://pro.bonkano.fr/page/privacy-policy';
+const TERMS_CONDITION_URL = 'https://meet.bonkano.fr/page/terms-conditions';
+const PRIVACY_POLICY_URL = 'https://meet.bonkano.fr/page/privacy-policy';
 const INQUIRY_SUPPORT_EMAIL = 'contact@bonkano.fr';
 
 /// Numéro d'assistance Bonkano Meet Pro
