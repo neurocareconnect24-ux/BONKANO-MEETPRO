@@ -8,6 +8,8 @@ import 'package:bonkano_meet_pro/utils/colors.dart';
 import 'package:bonkano_meet_pro/utils/common_base.dart';
 import '../../../../main.dart';
 import '../../../../utils/app_common.dart';
+import '../../../appointment/appointment_detail.dart';
+import '../../../appointment/model/appointments_res_model.dart';
 import '../../body_chart/body_chart_screen.dart';
 import '../../clinical_details/clinical_details_screen.dart';
 import '../../clinical_details/structured_report_screen.dart';
@@ -119,6 +121,21 @@ class MoreInfoComponent extends StatelessWidget {
           trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 12, color: darkGray),
           padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
         ).paddingTop(16),
+        SettingItemWidget(
+          title: locale.value.appointment,
+          decoration: boxDecorationDefault(
+            color: context.cardColor,
+          ),
+          subTitle: "Voir le rendez-vous associé",
+          splashColor: transparentColor,
+          onTap: () {
+            Get.to(() => AppointmentDetail(), arguments: AppointmentData(id: encounterData.appointmentId));
+          },
+          titleTextStyle: boldTextStyle(size: 14),
+          leading: commonLeadingWid(imgPath: Assets.iconsIcCalendar, color: appColorSecondary),
+          trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 12, color: darkGray),
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+        ).paddingTop(16).visible(encounterData.appointmentId > 0),
         16.height,
       ],
     );
